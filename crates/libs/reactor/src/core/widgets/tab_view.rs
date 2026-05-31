@@ -1,5 +1,29 @@
 use super::*;
 
+/// Controls how tabs are sized in the strip.
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Default)]
+pub enum TabWidthMode {
+    /// All tabs share equal width.
+    #[default]
+    Equal,
+    /// Each tab sizes to fit its header content.
+    SizeToContent,
+    /// Tabs collapse to icon-only when not selected.
+    Compact,
+}
+
+/// Controls when the per-tab close (×) button is visible.
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Default)]
+pub enum CloseButtonOverlayMode {
+    /// Platform default — typically `OnPointerOver`.
+    #[default]
+    Auto,
+    /// Close button only appears on hover/pointer-over.
+    OnPointerOver,
+    /// Close button is always visible.
+    Always,
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct TabItem {
     pub key: Option<String>,
@@ -34,6 +58,9 @@ pub struct TabView {
     pub on_selection_changed: Option<Callback<i32>>,
     pub on_tab_close_requested: Option<Callback<String>>,
     pub on_add_tab_button_click: Option<Callback<()>>,
+    pub is_add_tab_button_visible: bool,
+    pub tab_width_mode: TabWidthMode,
+    pub close_button_overlay_mode: CloseButtonOverlayMode,
 }
 impl TabView {
     pub fn new<I: IntoIterator<Item = TabItem>>(tabs: I) -> Self {
@@ -61,6 +88,18 @@ impl TabView {
     }
     pub fn on_add_tab_button_click<F: Fn() + 'static>(mut self, f: F) -> Self {
         self.on_add_tab_button_click = Some(Callback::new(move |()| f()));
+        self
+    }
+    pub fn is_add_tab_button_visible(mut self, v: bool) -> Self {
+        self.is_add_tab_button_visible = v;
+        self
+    }
+    pub fn tab_width_mode(mut self, m: TabWidthMode) -> Self {
+        self.tab_width_mode = m;
+        self
+    }
+    pub fn close_button_overlay_mode(mut self, m: CloseButtonOverlayMode) -> Self {
+        self.close_button_overlay_mode = m;
         self
     }
 }
@@ -96,6 +135,9 @@ impl Widget for TabView {
                     .as_ref()
                     .map(|cb| EventHandler::Click(cb.clone())),
             ),
+            Binding::Prop(Prop::IsAddTabButtonVisible, PropValue::Bool(self.is_add_tab_button_visible)),
+            Binding::Prop(Prop::TabWidthMode, PropValue::TabWidthMode(self.tab_width_mode)),
+            Binding::Prop(Prop::CloseButtonOverlayMode, PropValue::CloseButtonOverlayMode(self.close_button_overlay_mode)),
         ]
     }
     fn children(&self) -> Children<'_> {

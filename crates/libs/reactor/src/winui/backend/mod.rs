@@ -1557,6 +1557,29 @@ impl Backend for WinUIBackend {
                 (Prop::CanReorderTabs, PropValue::Bool(v), Handle::TabView(tv)) => {
                     tv.put_CanReorderTabs(*v)
                 }
+                (Prop::IsAddTabButtonVisible, PropValue::Bool(v), Handle::TabView(tv)) => {
+                    tv.put_IsAddTabButtonVisible(*v)
+                }
+                (Prop::TabWidthMode, PropValue::TabWidthMode(m), Handle::TabView(tv)) => {
+                    use TabWidthMode as E;
+                    use Xaml::TabViewWidthMode as W;
+                    let mapped = match m {
+                        E::Equal => W::Equal,
+                        E::SizeToContent => W::SizeToContent,
+                        E::Compact => W::Compact,
+                    };
+                    tv.put_TabWidthMode(mapped)
+                }
+                (Prop::CloseButtonOverlayMode, PropValue::CloseButtonOverlayMode(m), Handle::TabView(tv)) => {
+                    use CloseButtonOverlayMode as E;
+                    use Xaml::TabViewCloseButtonOverlayMode as W;
+                    let mapped = match m {
+                        E::Auto => W::Auto,
+                        E::OnPointerOver => W::OnPointerOver,
+                        E::Always => W::Always,
+                    };
+                    tv.put_CloseButtonOverlayMode(mapped)
+                }
                 (Prop::TabHeader, PropValue::Str(s), Handle::TabViewItem(ti)) => {
                     let tb = string_as_textblock(s)?;
                     ti.put_Header(&tb)

@@ -170,6 +170,12 @@ pub enum Prop {
     TabContent,
     /// Enables drag-to-reorder on `TabView` tabs.
     CanReorderTabs,
+    /// Whether the "+" tab button is visible on `TabView`.
+    IsAddTabButtonVisible,
+    /// How tabs are sized in the `TabView` strip.
+    TabWidthMode,
+    /// When the per-tab close button is shown on `TabView`.
+    CloseButtonOverlayMode,
     NavigateUri,
     NavMenuItems,
     NavSelectedTag,
@@ -375,6 +381,8 @@ pub enum PropValue {
     SymbolIcon(SymbolGlyph),
     FlyoutPlacement(FlyoutPlacement),
     Resources(HashMap<String, String>),
+    TabWidthMode(TabWidthMode),
+    CloseButtonOverlayMode(CloseButtonOverlayMode),
 }
 
 /// Closed enum of every backend-observable input event.
