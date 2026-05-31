@@ -66,6 +66,7 @@ impl TabView {
     pub fn new<I: IntoIterator<Item = TabItem>>(tabs: I) -> Self {
         Self {
             tabs: tabs.into_iter().collect(),
+            is_add_tab_button_visible: true,
             ..Default::default()
         }
     }
