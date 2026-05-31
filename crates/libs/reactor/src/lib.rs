@@ -49,5 +49,5 @@ pub use core::theme::*;
 pub use core::window::*;
 pub use dsl::*;
 pub use winui::dispatcher::WinUIDispatcher;
-pub use winui::host::{Backdrop, RequestedTheme, set_backdrop, set_requested_theme};
+pub use winui::host::{Backdrop, ReactorHost, RequestedTheme, set_backdrop, set_requested_theme};
 pub use winui::{DispatcherTimer, Rendering, on_rendering};
