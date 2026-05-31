@@ -3213,6 +3213,17 @@ impl Backend for WinUIBackend {
             (Event::TabCloseRequested, _) => {
                 panic!("WinUIBackend::attach_event: TabCloseRequested on non-TabView {id}")
             }
+            (Event::TabAddButtonClicked, Handle::TabView(tv)) => {
+                revokers.push(
+                    tv.add_AddTabButtonClick(move |_sender, _args| {
+                        handler.invoke();
+                    })
+                    .unwrap(),
+                );
+            }
+            (Event::TabAddButtonClicked, _) => {
+                panic!("WinUIBackend::attach_event: TabAddButtonClicked on non-TabView {id}")
+            }
             (Event::NavSelectionChanged, Handle::NavigationView(nv)) => {
                 revokers.push(
                     nv.add_SelectionChanged(move |_sender, args| {

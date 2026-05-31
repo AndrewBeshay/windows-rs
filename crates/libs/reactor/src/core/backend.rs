@@ -390,6 +390,8 @@ pub enum Event {
     InfoBarClosed,
     TabSelectionChanged,
     TabCloseRequested,
+    /// TabView: the "add tab" (+) button was clicked.
+    TabAddButtonClicked,
     NavSelectionChanged,
     NavBackRequested,
     /// NavigationView: search box query submitted.

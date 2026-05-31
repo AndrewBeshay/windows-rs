@@ -17386,6 +17386,38 @@ impl ITabView {
             ))
         }
     }
+    pub fn add_AddTabButtonClick<F>(
+        &self,
+        handler: F,
+    ) -> windows_core::Result<windows_core::EventRevoker>
+    where
+        F: Fn(windows_core::Ref<TabView>, windows_core::Ref<windows_core::IInspectable>) + 'static,
+    {
+        let handler: TypedEventHandler<TabView, windows_core::IInspectable> = {
+            let com = windows_core::imp::DelegateBox::<
+                TypedEventHandler<TabView, windows_core::IInspectable>,
+                F,
+            >::new(
+                &TypedEventHandlerBox::<TabView, windows_core::IInspectable, F>::VTABLE,
+                handler,
+            );
+            unsafe { core::mem::transmute(windows_core::imp::Box::new(com)) }
+        };
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            let token__ = (windows_core::Interface::vtable(self).add_AddTabButtonClick)(
+                windows_core::Interface::as_raw(self),
+                windows_core::Interface::as_raw(&handler),
+                &mut result__,
+            )
+            .map(|| result__)?;
+            Ok(windows_core::EventRevoker::new(
+                self.clone(),
+                token__,
+                windows_core::Interface::vtable(self).remove_AddTabButtonClick,
+            ))
+        }
+    }
     pub fn get_TabItems(
         &self,
     ) -> windows_core::Result<windows_collections::IVector<windows_core::IInspectable>> {
@@ -17490,8 +17522,13 @@ pub struct ITabView_Vtbl {
         unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
     add_TabDroppedOutside: usize,
     remove_TabDroppedOutside: usize,
-    add_AddTabButtonClick: usize,
-    remove_AddTabButtonClick: usize,
+    pub add_AddTabButtonClick: unsafe extern "system" fn(
+        *mut core::ffi::c_void,
+        *mut core::ffi::c_void,
+        *mut i64,
+    ) -> windows_core::HRESULT,
+    pub remove_AddTabButtonClick:
+        unsafe extern "system" fn(*mut core::ffi::c_void, i64) -> windows_core::HRESULT,
     add_TabItemsChanged: usize,
     remove_TabItemsChanged: usize,
     get_TabItemsSource: usize,
