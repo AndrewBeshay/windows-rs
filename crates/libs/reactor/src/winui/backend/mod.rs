@@ -4094,10 +4094,20 @@ impl Backend for WinUIBackend {
                             }
                         }
 
-                        // Size via IFrameworkElement.
+                        // Size + baseline nudge via IFrameworkElement. A bottom
+                        // margin shifts the inline image off the text baseline so
+                        // badges/emotes can sit centred on the text.
                         if let Ok(fe) = image.cast::<Xaml::IFrameworkElement>() {
                             let _ = fe.put_Width(im.width);
                             let _ = fe.put_Height(im.height);
+                            if im.baseline_offset != 0.0 {
+                                let _ = fe.put_Margin(Xaml::Thickness {
+                                    Left: 0.0,
+                                    Top: 0.0,
+                                    Right: 0.0,
+                                    Bottom: im.baseline_offset,
+                                });
+                            }
                         }
 
                         // Wrap in an InlineUIContainer so it sits inside the paragraph flow.

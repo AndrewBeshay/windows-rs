@@ -34,6 +34,9 @@ pub struct RichTextImage {
     pub source: String, // file:// or https URL
     pub width: f64,
     pub height: f64,
+    /// Vertical nudge applied as a bottom margin so the image can be centred
+    /// on the text instead of sitting on the baseline. Negative pulls it down.
+    pub baseline_offset: f64,
 }
 
 #[derive(Clone, Debug, PartialEq)]
