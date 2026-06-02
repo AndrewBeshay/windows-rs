@@ -4044,10 +4044,24 @@ impl Backend for WinUIBackend {
                     crate::core::rich_text::RichTextInline::Run(r) => {
                         let Ok(run) = Xaml::Run::new() else { continue };
                         let _ = run.put_Text(&r.text);
-                        if r.is_bold {
-                            let _ = run
-                                .cast::<Xaml::ITextElement>()
-                                .and_then(|te| te.put_FontWeight(WinFontWeight { Weight: 700 }));
+                        if let Ok(te) = run.cast::<Xaml::ITextElement>() {
+                            if r.is_bold {
+                                let _ = te.put_FontWeight(WinFontWeight { Weight: 700 });
+                            }
+                            // Per-run foreground colour (e.g. chat usernames).
+                            if let Some([cr, cg, cb]) = r.color {
+                                let color = crate::core::geometry::Color {
+                                    a: 255,
+                                    r: cr,
+                                    g: cg,
+                                    b: cb,
+                                };
+                                if let Ok(brush) =
+                                    solid_brush(color).and_then(|b| b.cast::<Xaml::Brush>())
+                                {
+                                    let _ = te.put_Foreground(&brush);
+                                }
+                            }
                         }
                         let _ = run.cast::<Xaml::Inline>().and_then(|i| inlines.Append(&i));
                     }
