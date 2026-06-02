@@ -17353,6 +17353,36 @@ impl windows_core::RuntimeType for ITabView {
         windows_core::imp::ConstBuffer::for_interface::<Self>();
 }
 impl ITabView {
+    pub fn put_TabWidthMode(&self, value: TabViewWidthMode) -> windows_core::Result<()> {
+        unsafe {
+            (windows_core::Interface::vtable(self).put_TabWidthMode)(
+                windows_core::Interface::as_raw(self),
+                value,
+            )
+            .ok()
+        }
+    }
+    pub fn put_CloseButtonOverlayMode(
+        &self,
+        value: TabViewCloseButtonOverlayMode,
+    ) -> windows_core::Result<()> {
+        unsafe {
+            (windows_core::Interface::vtable(self).put_CloseButtonOverlayMode)(
+                windows_core::Interface::as_raw(self),
+                value,
+            )
+            .ok()
+        }
+    }
+    pub fn put_IsAddTabButtonVisible(&self, value: bool) -> windows_core::Result<()> {
+        unsafe {
+            (windows_core::Interface::vtable(self).put_IsAddTabButtonVisible)(
+                windows_core::Interface::as_raw(self),
+                value,
+            )
+            .ok()
+        }
+    }
     pub fn add_TabCloseRequested<F>(
         &self,
         handler: F,
@@ -17496,9 +17526,15 @@ impl ITabView {
 pub struct ITabView_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     get_TabWidthMode: usize,
-    put_TabWidthMode: usize,
+    pub put_TabWidthMode: unsafe extern "system" fn(
+        *mut core::ffi::c_void,
+        TabViewWidthMode,
+    ) -> windows_core::HRESULT,
     get_CloseButtonOverlayMode: usize,
-    put_CloseButtonOverlayMode: usize,
+    pub put_CloseButtonOverlayMode: unsafe extern "system" fn(
+        *mut core::ffi::c_void,
+        TabViewCloseButtonOverlayMode,
+    ) -> windows_core::HRESULT,
     get_TabStripHeader: usize,
     put_TabStripHeader: usize,
     get_TabStripHeaderTemplate: usize,
@@ -17508,7 +17544,8 @@ pub struct ITabView_Vtbl {
     get_TabStripFooterTemplate: usize,
     put_TabStripFooterTemplate: usize,
     get_IsAddTabButtonVisible: usize,
-    put_IsAddTabButtonVisible: usize,
+    pub put_IsAddTabButtonVisible:
+        unsafe extern "system" fn(*mut core::ffi::c_void, bool) -> windows_core::HRESULT,
     get_AddTabButtonCommand: usize,
     put_AddTabButtonCommand: usize,
     get_AddTabButtonCommandParameter: usize,
@@ -27065,6 +27102,22 @@ impl windows_core::RuntimeName for TabView {
 unsafe impl Send for TabView {}
 unsafe impl Sync for TabView {}
 #[repr(transparent)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub struct TabViewCloseButtonOverlayMode(pub i32);
+impl TabViewCloseButtonOverlayMode {
+    pub const Auto: Self = Self(0i32);
+    pub const OnPointerOver: Self = Self(1i32);
+    pub const Always: Self = Self(2i32);
+}
+impl windows_core::TypeKind for TabViewCloseButtonOverlayMode {
+    type TypeKind = windows_core::CopyType;
+}
+impl windows_core::RuntimeType for TabViewCloseButtonOverlayMode {
+    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(
+        b"enum(Microsoft.UI.Xaml.Controls.TabViewCloseButtonOverlayMode;i4)",
+    );
+}
+#[repr(transparent)]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct TabViewItem(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(
@@ -27169,6 +27222,22 @@ impl windows_core::RuntimeName for TabViewTabCloseRequestedEventArgs {
 }
 unsafe impl Send for TabViewTabCloseRequestedEventArgs {}
 unsafe impl Sync for TabViewTabCloseRequestedEventArgs {}
+#[repr(transparent)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub struct TabViewWidthMode(pub i32);
+impl TabViewWidthMode {
+    pub const Equal: Self = Self(0i32);
+    pub const SizeToContent: Self = Self(1i32);
+    pub const Compact: Self = Self(2i32);
+}
+impl windows_core::TypeKind for TabViewWidthMode {
+    type TypeKind = windows_core::CopyType;
+}
+impl windows_core::RuntimeType for TabViewWidthMode {
+    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(
+        b"enum(Microsoft.UI.Xaml.Controls.TabViewWidthMode;i4)",
+    );
+}
 windows_core::imp::define_interface!(
     TappedEventHandler,
     TappedEventHandler_Vtbl,
