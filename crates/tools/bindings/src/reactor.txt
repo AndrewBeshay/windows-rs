@@ -170,7 +170,7 @@ Microsoft.UI.Xaml.Controls.IRichEditBox::{get_Document, put_PlaceholderText, put
 Microsoft.UI.Xaml.Controls.IRichTextBlock::{put_FontSize, put_FontFamily, put_IsTextSelectionEnabled, put_TextWrapping, put_Foreground, get_Blocks}
 Microsoft.UI.Xaml.Controls.IRowDefinition::{put_Height}
 Microsoft.UI.Xaml.Controls.IScrollView::{put_Content, put_HorizontalScrollBarVisibility, put_VerticalScrollBarVisibility}
-Microsoft.UI.Xaml.Controls.IScrollViewer::{put_HorizontalScrollBarVisibility, put_VerticalScrollBarVisibility}
+Microsoft.UI.Xaml.Controls.IScrollViewer::{put_HorizontalScrollBarVisibility, put_VerticalScrollBarVisibility, ScrollToVerticalOffset}
 Microsoft.UI.Xaml.Controls.ISelectorBar::{get_Items, get_SelectedItem, add_SelectionChanged}
 Microsoft.UI.Xaml.Controls.ISelectorBarItem::{put_Text, get_Text, put_Icon}
 Microsoft.UI.Xaml.Controls.ISlider::{put_StepFrequency, put_Header, put_Orientation}

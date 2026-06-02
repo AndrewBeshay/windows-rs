@@ -1022,6 +1022,14 @@ impl Backend for WinUIBackend {
                     PropValue::ScrollVis(v),
                     Handle::ScrollViewer(s),
                 ) => s.put_VerticalScrollBarVisibility(to_xaml_scroll_visibility(*v)),
+                (Prop::ScrollToBottom, PropValue::F64(_), Handle::ScrollViewer(s)) => {
+                    // Force pending layout so the just-added content is measured,
+                    // then scroll past the bottom (WinUI clamps to the extent).
+                    if let Ok(ue) = s.cast::<Xaml::IUIElement>() {
+                        let _ = ue.UpdateLayout();
+                    }
+                    s.ScrollToVerticalOffset(1.0e9)
+                }
                 (Prop::Orientation, PropValue::Vertical(vert), Handle::StackPanel(s)) => s
                     .put_Orientation(if *vert {
                         Xaml::Orientation::Vertical

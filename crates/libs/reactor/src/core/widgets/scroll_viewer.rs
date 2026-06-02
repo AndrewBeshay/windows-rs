@@ -7,6 +7,10 @@ pub struct ScrollViewer {
     pub child: Box<Element>,
     pub horizontal_scroll_bar_visibility: ScrollBarVisibility,
     pub vertical_scroll_bar_visibility: ScrollBarVisibility,
+    /// A changing token requesting scroll-to-bottom. When this value differs
+    /// from the previous render, the backend scrolls to the bottom (deferred
+    /// past layout). Use a monotonic counter that bumps when content is added.
+    pub scroll_to_bottom: Option<f64>,
 }
 impl Default for ScrollViewer {
     fn default() -> Self {
@@ -16,6 +20,7 @@ impl Default for ScrollViewer {
             child: Box::new(Element::Empty),
             horizontal_scroll_bar_visibility: ScrollBarVisibility::Disabled,
             vertical_scroll_bar_visibility: ScrollBarVisibility::Auto,
+            scroll_to_bottom: None,
         }
     }
 }
@@ -31,7 +36,7 @@ impl ScrollViewer {
 impl Widget for ScrollViewer {
     widget_header!(ControlKind::ScrollViewer);
     fn bindings(&self) -> PropBindings {
-        vec![
+        let mut out = vec![
             Binding::Prop(
                 Prop::HorizontalScrollBarVisibility,
                 PropValue::ScrollVis(self.horizontal_scroll_bar_visibility),
@@ -40,7 +45,11 @@ impl Widget for ScrollViewer {
                 Prop::VerticalScrollBarVisibility,
                 PropValue::ScrollVis(self.vertical_scroll_bar_visibility),
             ),
-        ]
+        ];
+        if let Some(token) = self.scroll_to_bottom {
+            out.push(Binding::Prop(Prop::ScrollToBottom, PropValue::F64(token)));
+        }
+        out
     }
     fn children(&self) -> Children<'_> {
         Children::PositionalSingle(&self.child)
@@ -55,6 +64,12 @@ impl ScrollViewer {
 
     pub fn vertical_scroll_bar_visibility(mut self, v: ScrollBarVisibility) -> Self {
         self.vertical_scroll_bar_visibility = v;
+        self
+    }
+
+    /// Request scroll-to-bottom whenever `token` changes between renders.
+    pub fn scroll_to_bottom(mut self, token: f64) -> Self {
+        self.scroll_to_bottom = Some(token);
         self
     }
 }

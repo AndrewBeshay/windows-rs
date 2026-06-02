@@ -134,6 +134,8 @@ pub enum Prop {
     AttachedGridColumnSpan,
     HorizontalScrollBarVisibility,
     VerticalScrollBarVisibility,
+    /// Token (changing value) requesting a ScrollViewer scroll-to-bottom.
+    ScrollToBottom,
     IsOn,
     OnContent,
     OffContent,
