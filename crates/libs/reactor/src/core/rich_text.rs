@@ -11,6 +11,7 @@ pub struct RichTextRun {
     pub is_strikethrough: bool,
     pub font_family: Option<String>,
     pub font_size: Option<f64>,
+    pub color: Option<[u8; 3]>,
 }
 
 impl RichTextRun {
@@ -28,11 +29,19 @@ pub struct RichTextHyperlink {
     pub uri: String,
 }
 
+#[derive(Clone, Default, Debug, PartialEq)]
+pub struct RichTextImage {
+    pub source: String, // file:// or https URL
+    pub width: f64,
+    pub height: f64,
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub enum RichTextInline {
     Run(RichTextRun),
     LineBreak,
     Hyperlink(RichTextHyperlink),
+    Image(RichTextImage),
 }
 
 impl Default for RichTextInline {

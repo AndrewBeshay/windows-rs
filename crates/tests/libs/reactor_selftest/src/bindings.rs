@@ -12020,6 +12020,39 @@ pub struct IInline_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
 }
 windows_core::imp::define_interface!(
+    IInlineUIContainer,
+    IInlineUIContainer_Vtbl,
+    0xd529bef6_c05a_5bad_85e8_640127cf86f5
+);
+impl windows_core::RuntimeType for IInlineUIContainer {
+    const SIGNATURE: windows_core::imp::ConstBuffer =
+        windows_core::imp::ConstBuffer::for_interface::<Self>();
+}
+impl IInlineUIContainer {
+    pub fn put_Child<P0>(&self, value: P0) -> windows_core::Result<()>
+    where
+        P0: windows_core::Param<UIElement>,
+    {
+        unsafe {
+            (windows_core::Interface::vtable(self).put_Child)(
+                windows_core::Interface::as_raw(self),
+                value.param().abi(),
+            )
+            .ok()
+        }
+    }
+}
+#[repr(C)]
+#[doc(hidden)]
+pub struct IInlineUIContainer_Vtbl {
+    pub base__: windows_core::IInspectable_Vtbl,
+    get_Child: usize,
+    pub put_Child: unsafe extern "system" fn(
+        *mut core::ffi::c_void,
+        *mut core::ffi::c_void,
+    ) -> windows_core::HRESULT,
+}
+windows_core::imp::define_interface!(
     IInvokeProvider,
     IInvokeProvider_Vtbl,
     0x02481105_3378_544d_b4e1_a1b368afbc02
@@ -18647,6 +18680,18 @@ impl ITextElement {
             .ok()
         }
     }
+    pub fn put_Foreground<P0>(&self, value: P0) -> windows_core::Result<()>
+    where
+        P0: windows_core::Param<Brush>,
+    {
+        unsafe {
+            (windows_core::Interface::vtable(self).put_Foreground)(
+                windows_core::Interface::as_raw(self),
+                value.param().abi(),
+            )
+            .ok()
+        }
+    }
 }
 #[repr(C)]
 #[doc(hidden)]
@@ -18670,7 +18715,10 @@ pub struct ITextElement_Vtbl {
     get_CharacterSpacing: usize,
     put_CharacterSpacing: usize,
     get_Foreground: usize,
-    put_Foreground: usize,
+    pub put_Foreground: unsafe extern "system" fn(
+        *mut core::ffi::c_void,
+        *mut core::ffi::c_void,
+    ) -> windows_core::HRESULT,
     get_Language: usize,
     put_Language: usize,
     get_IsTextScaleFactorEnabled: usize,
@@ -22118,6 +22166,51 @@ impl windows_core::RuntimeName for InlineCollection {
 }
 unsafe impl Send for InlineCollection {}
 unsafe impl Sync for InlineCollection {}
+#[repr(transparent)]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct InlineUIContainer(windows_core::IUnknown);
+windows_core::imp::interface_hierarchy!(
+    InlineUIContainer,
+    windows_core::IUnknown,
+    windows_core::IInspectable
+);
+windows_core::imp::required_hierarchy!(InlineUIContainer, Inline, TextElement, DependencyObject);
+impl InlineUIContainer {
+    pub fn new() -> windows_core::Result<Self> {
+        Self::IActivationFactory(|f| f.ActivateInstance::<Self>())
+    }
+    fn IActivationFactory<
+        R,
+        F: FnOnce(&windows_core::imp::IGenericFactory) -> windows_core::Result<R>,
+    >(
+        callback: F,
+    ) -> windows_core::Result<R> {
+        static SHARED: windows_core::imp::FactoryCache<
+            InlineUIContainer,
+            windows_core::imp::IGenericFactory,
+        > = windows_core::imp::FactoryCache::new();
+        SHARED.call(callback)
+    }
+}
+impl windows_core::RuntimeType for InlineUIContainer {
+    const SIGNATURE: windows_core::imp::ConstBuffer =
+        windows_core::imp::ConstBuffer::for_class::<Self, IInlineUIContainer>();
+}
+unsafe impl windows_core::Interface for InlineUIContainer {
+    type Vtable = <IInlineUIContainer as windows_core::Interface>::Vtable;
+    const IID: windows_core::GUID = <IInlineUIContainer as windows_core::Interface>::IID;
+}
+impl core::ops::Deref for InlineUIContainer {
+    type Target = IInlineUIContainer;
+    fn deref(&self) -> &Self::Target {
+        unsafe { core::mem::transmute(self) }
+    }
+}
+impl windows_core::RuntimeName for InlineUIContainer {
+    const NAME: &'static str = "Microsoft.UI.Xaml.Documents.InlineUIContainer";
+}
+unsafe impl Send for InlineUIContainer {}
+unsafe impl Sync for InlineUIContainer {}
 #[repr(transparent)]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ItemCollection(windows_core::IUnknown);

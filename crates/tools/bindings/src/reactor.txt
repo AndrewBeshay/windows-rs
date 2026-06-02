@@ -290,9 +290,11 @@ Microsoft.UI.Xaml.DataTemplate::{CreateInstance}
 Microsoft.UI.Xaml.DependencyObject
 Microsoft.UI.Xaml.Documents.BlockCollection
 Microsoft.UI.Xaml.Documents.InlineCollection
+Microsoft.UI.Xaml.Documents.InlineUIContainer::{CreateInstance}
+Microsoft.UI.Xaml.Documents.IInlineUIContainer::{put_Child}
 Microsoft.UI.Xaml.Documents.IParagraph::{get_Inlines}
 Microsoft.UI.Xaml.Documents.IRun::{put_Text}
-Microsoft.UI.Xaml.Documents.ITextElement::{put_FontWeight, put_FontFamily}
+Microsoft.UI.Xaml.Documents.ITextElement::{put_FontWeight, put_FontFamily, put_Foreground}
 Microsoft.UI.Xaml.Documents.Paragraph::{CreateInstance}
 Microsoft.UI.Xaml.Documents.Run::{CreateInstance}
 Microsoft.UI.Xaml.ElementTheme

@@ -1571,7 +1571,11 @@ impl Backend for WinUIBackend {
                     };
                     tv.put_TabWidthMode(mapped)
                 }
-                (Prop::CloseButtonOverlayMode, PropValue::CloseButtonOverlayMode(m), Handle::TabView(tv)) => {
+                (
+                    Prop::CloseButtonOverlayMode,
+                    PropValue::CloseButtonOverlayMode(m),
+                    Handle::TabView(tv),
+                ) => {
                     use CloseButtonOverlayMode as E;
                     use Xaml::TabViewCloseButtonOverlayMode as W;
                     let mapped = match m {
@@ -4058,6 +4062,42 @@ impl Backend for WinUIBackend {
                         let Ok(run) = Xaml::Run::new() else { continue };
                         let _ = run.put_Text(&h.text);
                         let _ = run.cast::<Xaml::Inline>().and_then(|i| inlines.Append(&i));
+                    }
+                    crate::core::rich_text::RichTextInline::Image(im) => {
+                        let Ok(image) = Xaml::Image::new() else {
+                            continue;
+                        };
+
+                        // Source via BitmapImage (same pattern as the Image prop handler).
+                        if let (Ok(uri), Ok(bmp)) =
+                            (Xaml::Uri::CreateUri(&im.source), Xaml::BitmapImage::new())
+                        {
+                            if let Ok(ibmp) = bmp.cast::<Xaml::IBitmapImage>() {
+                                let _ = ibmp.put_UriSource(&uri);
+                            }
+                            if let Ok(src) = bmp.cast::<Xaml::ImageSource>() {
+                                let _ = image.put_Source(&src);
+                            }
+                        }
+
+                        // Size via IFrameworkElement.
+                        if let Ok(fe) = image.cast::<Xaml::IFrameworkElement>() {
+                            let _ = fe.put_Width(im.width);
+                            let _ = fe.put_Height(im.height);
+                        }
+
+                        // Wrap in an InlineUIContainer so it sits inside the paragraph flow.
+                        let Ok(container) = Xaml::InlineUIContainer::new() else {
+                            continue;
+                        };
+                        if let Ok(ic) = container.cast::<Xaml::IInlineUIContainer>() {
+                            if let Ok(ui) = image.cast::<Xaml::UIElement>() {
+                                let _ = ic.put_Child(&ui);
+                            }
+                        }
+                        let _ = container
+                            .cast::<Xaml::Inline>()
+                            .and_then(|i| inlines.Append(&i));
                     }
                 }
             }
