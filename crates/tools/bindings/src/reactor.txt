@@ -149,7 +149,7 @@ Microsoft.UI.Xaml.Controls.IMenuBarItem::{get_Items, put_Title}
 Microsoft.UI.Xaml.Controls.IMenuFlyout::{get_Items}
 Microsoft.UI.Xaml.Controls.IMenuFlyoutItem::{put_Text, get_Text, add_Click}
 Microsoft.UI.Xaml.Controls.IMenuFlyoutSubItem::{get_Items, put_Text}
-Microsoft.UI.Xaml.Controls.INavigationView::{get_MenuItems, put_SelectedItem, get_SelectedItem, put_Header, put_IsSettingsVisible, put_AutoSuggestBox, get_AutoSuggestBox, put_IsPaneToggleButtonVisible, put_IsPaneOpen, add_SelectionChanged}
+Microsoft.UI.Xaml.Controls.INavigationView::{get_MenuItems, put_SelectedItem, get_SelectedItem, put_Header, put_IsSettingsVisible, put_AutoSuggestBox, get_AutoSuggestBox, put_IsPaneToggleButtonVisible, put_IsPaneOpen, put_OpenPaneLength, add_SelectionChanged}
 Microsoft.UI.Xaml.Controls.INavigationView2::{put_PaneDisplayMode, put_IsBackEnabled, put_PaneTitle, put_IsBackButtonVisible, add_BackRequested}
 Microsoft.UI.Xaml.Controls.INavigationViewItem::{put_Icon}
 Microsoft.UI.Xaml.Controls.INavigationViewItem2::{get_MenuItems}

@@ -1639,6 +1639,9 @@ impl Backend for WinUIBackend {
                 (Prop::IsPaneOpen, PropValue::Bool(v), Handle::NavigationView(nv)) => {
                     nv.put_IsPaneOpen(*v)
                 }
+                (Prop::OpenPaneLength, PropValue::F64(v), Handle::NavigationView(nv)) => {
+                    nv.put_OpenPaneLength(*v)
+                }
                 (
                     Prop::PaneDisplayMode,
                     PropValue::NavPaneDisplayMode(mode),

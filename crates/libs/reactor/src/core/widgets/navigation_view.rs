@@ -53,6 +53,7 @@ pub struct NavigationView {
     pub selected_tag: Option<String>,
     pub on_selection_changed: Option<Callback<String>>,
     pub is_pane_open: Option<bool>,
+    pub open_pane_length: Option<f64>,
     pub pane_display_mode: NavViewPaneDisplayMode,
     pub is_back_enabled: bool,
     pub on_back_requested: Option<Callback<()>>,
@@ -77,6 +78,7 @@ impl Default for NavigationView {
             selected_tag: None,
             on_selection_changed: None,
             is_pane_open: None,
+            open_pane_length: None,
             pane_display_mode: NavViewPaneDisplayMode::Auto,
             is_back_enabled: false,
             on_back_requested: None,
@@ -114,6 +116,12 @@ impl NavigationView {
     }
     pub fn pane_open(mut self, v: bool) -> Self {
         self.is_pane_open = Some(v);
+        self
+    }
+    /// Width (DIPs) of the expanded pane (`INavigationView::OpenPaneLength`).
+    /// WinUI's default is 320; set smaller for short nav labels.
+    pub fn open_pane_length(mut self, v: f64) -> Self {
+        self.open_pane_length = Some(v);
         self
     }
     pub fn pane_display_mode(mut self, mode: NavViewPaneDisplayMode) -> Self {
@@ -187,6 +195,9 @@ impl Widget for NavigationView {
                 Prop::IsPaneOpen,
                 PropValue::Bool(pane_open),
             ));
+        }
+        if let Some(len) = self.open_pane_length {
+            out.push(Binding::Prop(Prop::OpenPaneLength, PropValue::F64(len)));
         }
         out.push(Binding::Prop(
             Prop::PaneDisplayMode,

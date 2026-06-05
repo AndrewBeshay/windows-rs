@@ -189,6 +189,8 @@ pub enum Prop {
     /// Items shown in NavigationView's AutoSuggestBox suggestion list.
     NavAutoSuggestItems,
     IsPaneOpen,
+    /// NavigationView open-pane width in DIPs (`INavigationView::OpenPaneLength`).
+    OpenPaneLength,
     PaneDisplayMode,
     IsBackEnabled,
     IsSettingsVisible,
