@@ -78,6 +78,8 @@ jobs:
         run:  cargo check -p windows --no-default-features
       - name: Check windows-bindgen
         run:  cargo check -p windows-bindgen --no-default-features
+      - name: Check windows-canvas
+        run:  cargo check -p windows-canvas --no-default-features
       - name: Check windows-collections
         run:  cargo check -p windows-collections --no-default-features
       - name: Check windows-core
@@ -98,6 +100,8 @@ jobs:
         run:  cargo check -p windows-rdl --no-default-features
       - name: Check windows-reactor
         run:  cargo check -p windows-reactor --no-default-features
+      - name: Check windows-reactor-setup
+        run:  cargo check -p windows-reactor-setup --no-default-features
       - name: Check windows-reference
         run:  cargo check -p windows-reference --no-default-features
       - name: Check windows-registry

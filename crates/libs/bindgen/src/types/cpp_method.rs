@@ -256,7 +256,7 @@ impl CppMethod {
         let name = method_names.add(self.def);
         let vname = virtual_names.add(self.def);
 
-        let args = self.write_args();
+        let args = self.write_args(config);
         let params = self.write_params(config);
         let generics = self.write_generics();
         let abi_return_type = self.write_return(config);
@@ -635,7 +635,7 @@ impl CppMethod {
         tokens
     }
 
-    pub fn write_args(&self) -> TokenStream {
+    pub fn write_args(&self, config: &Config) -> TokenStream {
         let mut tokens = quote! {};
 
         for (position, param) in self.signature.params.iter().enumerate() {
@@ -663,17 +663,34 @@ impl CppMethod {
                         | ParamHint::ArrayRelativeLen(_)
                         | ParamHint::ArrayRelativeByteLen(_) => {
                             let map = if param.is_optional() {
-                                quote! { #name.as_deref().map_or(core::ptr::null(), |slice|slice.as_ptr()) }
+                                if param.is_input() {
+                                    quote! { #name.map_or(core::ptr::null(), |slice|slice.as_ptr()) }
+                                } else {
+                                    quote! { #name.as_deref().map_or(core::ptr::null(), |slice|slice.as_ptr()) }
+                                }
                             } else {
                                 quote! { #name.as_ptr() }
                             };
-                            quote! { core::mem::transmute(#map), }
+                            // In minimal mode, when the param type is a raw pointer
+                            // (not PCWSTR/PCSTR wrapper), the element type matches the
+                            // vtable signature — no transmute needed.
+                            if config.minimal_filter.is_some()
+                                && matches!(param.ty, Type::PtrConst(..) | Type::PtrMut(..))
+                            {
+                                quote! { #map, }
+                            } else {
+                                quote! { core::mem::transmute(#map), }
+                            }
                         }
                         ParamHint::ArrayRelativePtr(relative) => {
                             let relative_param = &self.signature.params[relative];
                             let name = relative_param.write_ident();
                             if relative_param.is_optional() {
-                                quote! { #name.as_deref().map_or(0, |slice|slice.len().try_into().unwrap()), }
+                                if relative_param.is_input() {
+                                    quote! { #name.map_or(0, |slice|slice.len().try_into().unwrap()), }
+                                } else {
+                                    quote! { #name.as_deref().map_or(0, |slice|slice.len().try_into().unwrap()), }
+                                }
                             } else {
                                 quote! { #name.len().try_into().unwrap(), }
                             }
@@ -700,7 +717,15 @@ impl CppMethod {
                         }
                         ParamHint::Blittable => {
                             if matches!(param.ty, Type::PrimitiveOrEnum(_, _)) {
-                                quote! { #name.0 as _, }
+                                if config.minimal_filter.is_some() {
+                                    quote! { #name as _, }
+                                } else {
+                                    quote! { #name.0 as _, }
+                                }
+                            } else if config.minimal_filter.is_some() {
+                                // In minimal mode, blittable types ARE their ABI
+                                // representation — no transmute needed.
+                                quote! { #name, }
                             } else {
                                 quote! { core::mem::transmute(#name), }
                             }

@@ -1,4 +1,4 @@
-//! Minimal sample for `Button` with a symbol icon.
+//! Sample for `Button` with a symbol icon.
 
 use windows_reactor::*;
 
@@ -26,5 +26,5 @@ fn app(cx: &mut RenderCx) -> Element {
 }
 
 fn main() -> Result<()> {
-    App::new().title("Button Icon Sample").render(app)
+    reactor_minimal::run("ButtonIcon", app)
 }

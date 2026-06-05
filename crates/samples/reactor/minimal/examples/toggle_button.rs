@@ -1,4 +1,4 @@
-//! Minimal sample for the `ToggleButton` widget.
+//! Sample for the `ToggleButton` widget.
 
 use windows_reactor::*;
 
@@ -26,5 +26,5 @@ fn app(cx: &mut RenderCx) -> Element {
 }
 
 fn main() -> Result<()> {
-    App::new().title("Sample").render(app)
+    reactor_minimal::run("ToggleButton", app)
 }

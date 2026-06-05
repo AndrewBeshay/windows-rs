@@ -1,7 +1,4 @@
-//! Demonstrates `Element::Group` (fragments) and `CustomElement`.
-//!
-//! * `Group` contributes multiple siblings without an extra wrapper.
-//! * `CustomElement` is the extension hatch for third-party widgets.
+//! Sample for `Element::Group` and `CustomElement`.
 
 #![windows_subsystem = "windows"]
 
@@ -112,7 +109,5 @@ fn app(cx: &mut RenderCx) -> Element {
 }
 
 fn main() -> Result<()> {
-    App::new()
-        .title("windows_reactor — composition")
-        .render(app)
+    reactor_minimal::run("Composition", app)
 }

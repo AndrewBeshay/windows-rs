@@ -55,10 +55,10 @@ pub struct TabView {
     pub tabs: Vec<TabItem>,
     pub selected_index: i32,
     pub can_reorder_tabs: bool,
+    pub is_add_tab_button_visible: bool,
     pub on_selection_changed: Option<Callback<i32>>,
     pub on_tab_close_requested: Option<Callback<String>>,
     pub on_add_tab_button_click: Option<Callback<()>>,
-    pub is_add_tab_button_visible: bool,
     pub tab_width_mode: TabWidthMode,
     pub close_button_overlay_mode: CloseButtonOverlayMode,
 }
@@ -79,6 +79,11 @@ impl TabView {
         self.can_reorder_tabs = v;
         self
     }
+    /// Show or hide the built-in "+" add-tab button (`ITabView::IsAddTabButtonVisible`).
+    pub fn is_add_tab_button_visible(mut self, v: bool) -> Self {
+        self.is_add_tab_button_visible = v;
+        self
+    }
     pub fn on_selection_changed(mut self, f: impl IntoCallback<i32>) -> Self {
         self.on_selection_changed = Some(f.into_callback());
         self
@@ -87,18 +92,17 @@ impl TabView {
         self.on_tab_close_requested = Some(Callback::new(f));
         self
     }
+    /// Handle the built-in "+" add-tab button click (`ITabView::AddTabButtonClick`).
     pub fn on_add_tab_button_click<F: Fn() + 'static>(mut self, f: F) -> Self {
         self.on_add_tab_button_click = Some(Callback::new(move |()| f()));
         self
     }
-    pub fn is_add_tab_button_visible(mut self, v: bool) -> Self {
-        self.is_add_tab_button_visible = v;
-        self
-    }
+    /// Set how tabs are sized in the strip (`ITabView::TabWidthMode`).
     pub fn tab_width_mode(mut self, m: TabWidthMode) -> Self {
         self.tab_width_mode = m;
         self
     }
+    /// Set when the per-tab close button is shown (`ITabView::CloseButtonOverlayMode`).
     pub fn close_button_overlay_mode(mut self, m: CloseButtonOverlayMode) -> Self {
         self.close_button_overlay_mode = m;
         self
@@ -118,6 +122,10 @@ impl Widget for TabView {
         vec![
             Binding::Prop(Prop::SelectedIndex, PropValue::I32(self.selected_index)),
             Binding::Prop(Prop::CanReorderTabs, PropValue::Bool(self.can_reorder_tabs)),
+            Binding::Prop(
+                Prop::IsAddTabButtonVisible,
+                PropValue::Bool(self.is_add_tab_button_visible),
+            ),
             Binding::Event(
                 Event::TabSelectionChanged,
                 self.on_selection_changed
@@ -131,14 +139,19 @@ impl Widget for TabView {
                     .map(|cb| EventHandler::TabKey(cb.clone())),
             ),
             Binding::Event(
-                Event::TabAddButtonClicked,
+                Event::AddTabButtonClick,
                 self.on_add_tab_button_click
                     .as_ref()
                     .map(|cb| EventHandler::Click(cb.clone())),
             ),
-            Binding::Prop(Prop::IsAddTabButtonVisible, PropValue::Bool(self.is_add_tab_button_visible)),
-            Binding::Prop(Prop::TabWidthMode, PropValue::TabWidthMode(self.tab_width_mode)),
-            Binding::Prop(Prop::CloseButtonOverlayMode, PropValue::CloseButtonOverlayMode(self.close_button_overlay_mode)),
+            Binding::Prop(
+                Prop::TabWidthMode,
+                PropValue::TabWidthMode(self.tab_width_mode),
+            ),
+            Binding::Prop(
+                Prop::CloseButtonOverlayMode,
+                PropValue::CloseButtonOverlayMode(self.close_button_overlay_mode),
+            ),
         ]
     }
     fn children(&self) -> Children<'_> {

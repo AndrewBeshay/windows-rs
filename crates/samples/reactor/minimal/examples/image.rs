@@ -1,4 +1,4 @@
-//! Minimal sample for the `Image` element.
+//! Sample for the `Image` element.
 
 use windows_reactor::*;
 
@@ -10,19 +10,19 @@ fn app(_cx: &mut RenderCx) -> Element {
 
     vstack((
         text_block("Uniform (default)"),
-        Image::new(&source).width(120.0).height(60.0),
+        Image::new_with_uri(&source).width(120.0).height(60.0),
         text_block("UniformToFill"),
-        Image::new(&source)
+        Image::new_with_uri(&source)
             .stretch(ImageStretch::UniformToFill)
             .width(120.0)
             .height(60.0),
         text_block("Fill"),
-        Image::new(&source)
+        Image::new_with_uri(&source)
             .stretch(ImageStretch::Fill)
             .width(120.0)
             .height(60.0),
         text_block("None"),
-        Image::new(&source)
+        Image::new_with_uri(&source)
             .stretch(ImageStretch::None)
             .width(120.0)
             .height(60.0),
@@ -32,5 +32,5 @@ fn app(_cx: &mut RenderCx) -> Element {
 }
 
 fn main() -> Result<()> {
-    App::new().title("Sample").render(app)
+    reactor_minimal::run("Image", app)
 }

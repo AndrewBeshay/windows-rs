@@ -1,7 +1,4 @@
-//! Minimal sample for the `CalendarDatePicker` element.
-//!
-//! Computes days between today and the selected date using
-//! `DateTime::now()` and `checked_duration_since`.
+//! Sample for the `CalendarDatePicker` element.
 
 use windows_reactor::*;
 
@@ -43,5 +40,5 @@ fn app(cx: &mut RenderCx) -> Element {
 }
 
 fn main() -> Result<()> {
-    App::new().title("Sample").render(app)
+    reactor_minimal::run("CalendarDatePicker", app)
 }

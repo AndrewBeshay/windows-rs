@@ -1,4 +1,4 @@
-//! Minimal sample for the `CommandBar` widget.
+//! Sample for the `CommandBar` widget.
 
 use windows_reactor::*;
 
@@ -22,5 +22,5 @@ fn app(cx: &mut RenderCx) -> Element {
 }
 
 fn main() -> Result<()> {
-    App::new().title("CommandBar Sample").render(app)
+    reactor_minimal::run("CommandBar", app)
 }

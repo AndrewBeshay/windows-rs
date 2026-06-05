@@ -51,5 +51,5 @@ fn app(cx: &mut RenderCx) -> Element {
 }
 
 fn main() -> Result<()> {
-    App::new().title("windows_reactor — counter").render(app)
+    reactor_minimal::run("Counter", app)
 }

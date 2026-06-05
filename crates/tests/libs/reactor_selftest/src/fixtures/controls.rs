@@ -182,7 +182,9 @@ pub fn mount_info_badge(h: Harness) -> FixtureFuture {
 
 pub fn mount_image(h: Harness) -> FixtureFuture {
     Box::pin(async move {
-        h.mount(cc(|_| Image::new("ms-appx:///Assets/none.png").into()));
+        h.mount(cc(|_| {
+            Image::new_with_uri("ms-appx:///Assets/none.png").into()
+        }));
         h.render().await;
         assert_present!(h, "Reconciler_Mount_Image", bindings::Image);
     })
@@ -205,6 +207,25 @@ pub fn mount_tab_view(h: Harness) -> FixtureFuture {
         // frame. The presence of the TabView control itself is sufficient to
         // confirm mount+attach succeeded.
         assert_present!(h, "Reconciler_Mount_TabView", bindings::TabView);
+    })
+}
+
+pub fn mount_tab_view_add_button(h: Harness) -> FixtureFuture {
+    Box::pin(async move {
+        h.mount(cc(|_| {
+            TabView::new([
+                TabItem::new("Home", text_block("home-content")),
+                TabItem::new("Settings", text_block("settings-content")),
+            ])
+            .selected_index(0)
+            .is_add_tab_button_visible(true)
+            .on_add_tab_button_click(|()| {})
+            .into()
+        }));
+        h.render().await;
+        // Confirms that the TabView mounts successfully with the add-tab
+        // button visible and the AddTabButtonClick event handler attached.
+        assert_present!(h, "Reconciler_Mount_TabView_AddButton", bindings::TabView);
     })
 }
 

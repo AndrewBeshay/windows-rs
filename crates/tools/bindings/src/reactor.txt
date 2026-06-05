@@ -1,5 +1,6 @@
 extras.IWindowNative::{get_WindowHandle}
 extras.ISwapChainPanelNative::{SetSwapChain}
+extras.ISurfaceImageSourceNativeWithD2D::{SetDevice, BeginDraw, EndDraw, SuspendDraw, ResumeDraw}
 extras.MddBootstrapInitialize2
 extras.MddBootstrapInitializeOptions
 extras.MddBootstrapInitializeOptions_OnNoMatch_ShowUI
@@ -53,8 +54,8 @@ Microsoft.UI.Windowing.IAppWindow2::{ResizeClient, get_ClientSize}
 Microsoft.UI.Windowing.IAppWindowTitleBar2::{put_PreferredHeightOption}
 Microsoft.UI.Windowing.IAppWindowTitleBar3::{put_PreferredTheme}
 Microsoft.UI.Windowing.IOverlappedPresenter3::{put_PreferredMinimumWidth, put_PreferredMinimumHeight, put_PreferredMaximumWidth, put_PreferredMaximumHeight}
-Microsoft.UI.Windowing.TitleBarHeightOption
-Microsoft.UI.Windowing.TitleBarTheme
+Microsoft.UI.Windowing.TitleBarHeightOption::{Standard, Tall}
+Microsoft.UI.Windowing.TitleBarTheme::{UseDefaultAppMode, Light, Dark}
 Microsoft.UI.Xaml.Application::{get_Current, Start}
 Microsoft.UI.Xaml.ApplicationInitializationCallback
 Microsoft.UI.Xaml.Automation.AutomationProperties::{SetAutomationId, SetHeadingLevel, SetHelpText, SetLiveSetting, SetName}
@@ -111,6 +112,9 @@ Microsoft.UI.Xaml.Controls.IAutoSuggestBoxQuerySubmittedEventArgs::{get_QueryTex
 Microsoft.UI.Xaml.Controls.IAutoSuggestBoxSuggestionChosenEventArgs::{get_SelectedItem}
 Microsoft.UI.Xaml.Controls.IAutoSuggestBoxTextChangedEventArgs::{get_Reason}
 Microsoft.UI.Xaml.Controls.IBorder::{put_Child, get_Child, put_Padding, put_Background, put_CornerRadius, put_BorderBrush, put_BorderThickness}
+Microsoft.UI.Xaml.Controls.IBreadcrumbBar::{put_ItemsSource, add_ItemClicked}
+Microsoft.UI.Xaml.Controls.IBreadcrumbBarItemClickedEventArgs::{get_Index}
+Microsoft.UI.Xaml.Controls.BreadcrumbBarItemClickedEventArgs
 Microsoft.UI.Xaml.Controls.IButton::{put_Flyout, get_Flyout}
 Microsoft.UI.Xaml.Controls.ICalendarDatePicker::{put_Header, put_PlaceholderText, put_IsTodayHighlighted, put_IsCalendarOpen, add_DateChanged}
 Microsoft.UI.Xaml.Controls.ICalendarDatePickerDateChangedEventArgs::{get_NewDate}
@@ -184,7 +188,7 @@ Microsoft.UI.Xaml.Controls.ITabViewTabCloseRequestedEventArgs::{get_Tab}
 Microsoft.UI.Xaml.Controls.ITeachingTip::{put_Title, put_Subtitle, put_IsOpen, put_IsLightDismissEnabled, put_PreferredPlacement, put_ActionButtonContent, put_CloseButtonContent, add_Closed, add_ActionButtonClick}
 Microsoft.UI.Xaml.Controls.ItemCollection
 Microsoft.UI.Xaml.Controls.ItemsControl
-Microsoft.UI.Xaml.Controls.ITextBlock::{put_Text, get_Text, put_FontSize, put_FontWeight, put_FontFamily, put_Foreground, put_TextWrapping}
+Microsoft.UI.Xaml.Controls.ITextBlock::{put_Text, get_Text, put_FontSize, put_FontWeight, put_FontFamily, put_Foreground, put_TextWrapping, put_IsTextSelectionEnabled}
 Microsoft.UI.Xaml.Controls.ITextBox::{get_Text, put_Text, put_PlaceholderText, put_Header, put_AcceptsReturn, put_TextWrapping, add_TextChanged}
 Microsoft.UI.Xaml.Controls.ITimePicker::{put_Header, put_ClockIdentifier, put_MinuteIncrement, add_SelectedTimeChanged}
 Microsoft.UI.Xaml.Controls.ITimePickerSelectedValueChangedEventArgs::{get_NewTime}
@@ -204,7 +208,7 @@ Microsoft.UI.Xaml.Controls.MenuFlyoutItem::{CreateInstance}
 Microsoft.UI.Xaml.Controls.MenuFlyoutSeparator::{CreateInstance}
 Microsoft.UI.Xaml.Controls.MenuFlyoutSubItem::{CreateInstance}
 Microsoft.UI.Xaml.Controls.NavigationView::{CreateInstance}
-Microsoft.UI.Xaml.Controls.NavigationViewBackButtonVisible
+Microsoft.UI.Xaml.Controls.NavigationViewBackButtonVisible::{Collapsed, Auto}
 Microsoft.UI.Xaml.Controls.NavigationViewBackRequestedEventArgs
 Microsoft.UI.Xaml.Controls.NavigationViewItem::{CreateInstance}
 Microsoft.UI.Xaml.Controls.NavigationViewItemHeader::{CreateInstance}
@@ -258,6 +262,7 @@ Microsoft.UI.Xaml.Controls.SplitView::{CreateInstance}
 Microsoft.UI.Xaml.Controls.SplitViewDisplayMode
 Microsoft.UI.Xaml.Controls.StackPanel::{CreateInstance}
 Microsoft.UI.Xaml.Controls.SwapChainPanel::{CreateInstance}
+Microsoft.UI.Xaml.Controls.ISwapChainPanel::{get_CompositionScaleX, get_CompositionScaleY, add_CompositionScaleChanged, remove_CompositionScaleChanged}
 Microsoft.UI.Xaml.Controls.Symbol
 Microsoft.UI.Xaml.Controls.SymbolIcon::{CreateInstance}
 Microsoft.UI.Xaml.Controls.SymbolIcon::{CreateInstanceWithSymbol}
@@ -336,6 +341,7 @@ Microsoft.UI.Xaml.Media.FontFamily::{CreateInstanceWithName}
 Microsoft.UI.Xaml.Media.ImageSource
 Microsoft.UI.Xaml.Media.Imaging.BitmapImage
 Microsoft.UI.Xaml.Media.Imaging.IBitmapImage::{put_UriSource}
+Microsoft.UI.Xaml.Media.Imaging.SurfaceImageSource::{CreateInstanceWithDimensions}
 Microsoft.UI.Xaml.Media.IMicaBackdrop::{put_Kind}
 Microsoft.UI.Xaml.Media.ISolidColorBrush::{put_Color}
 Microsoft.UI.Xaml.Media.MicaBackdrop::{CreateInstance}

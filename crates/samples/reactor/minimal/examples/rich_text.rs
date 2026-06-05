@@ -1,4 +1,4 @@
-//! Minimal sample for the `RichTextBlock` element.
+//! Sample for the `RichTextBlock` element.
 
 use windows_reactor::core::rich_text::{
     RichTextBlock, RichTextHyperlink, RichTextInline, RichTextParagraph, RichTextRun,
@@ -58,5 +58,5 @@ fn app(_cx: &mut RenderCx) -> Element {
 }
 
 fn main() -> Result<()> {
-    App::new().title("Sample").render(app)
+    reactor_minimal::run("RichText", app)
 }

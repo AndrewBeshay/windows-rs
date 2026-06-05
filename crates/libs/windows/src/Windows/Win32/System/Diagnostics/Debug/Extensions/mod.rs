@@ -18347,7 +18347,7 @@ impl IDebugControl {
         }
     }
     pub unsafe fn OutputStackTrace(&self, outputcontrol: u32, frames: Option<&[DEBUG_STACK_FRAME]>, flags: u32) -> windows_core::Result<()> {
-        unsafe { (windows_core::Interface::vtable(self).OutputStackTrace)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
+        unsafe { (windows_core::Interface::vtable(self).OutputStackTrace)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
     }
     pub unsafe fn GetDebuggeeType(&self, class: *mut u32, qualifier: *mut u32) -> windows_core::Result<()> {
         unsafe { (windows_core::Interface::vtable(self).GetDebuggeeType)(windows_core::Interface::as_raw(self), class as _, qualifier as _).ok() }
@@ -19809,7 +19809,7 @@ impl IDebugControl2 {
         }
     }
     pub unsafe fn OutputStackTrace(&self, outputcontrol: u32, frames: Option<&[DEBUG_STACK_FRAME]>, flags: u32) -> windows_core::Result<()> {
-        unsafe { (windows_core::Interface::vtable(self).OutputStackTrace)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
+        unsafe { (windows_core::Interface::vtable(self).OutputStackTrace)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
     }
     pub unsafe fn GetDebuggeeType(&self, class: *mut u32, qualifier: *mut u32) -> windows_core::Result<()> {
         unsafe { (windows_core::Interface::vtable(self).GetDebuggeeType)(windows_core::Interface::as_raw(self), class as _, qualifier as _).ok() }
@@ -21423,7 +21423,7 @@ impl IDebugControl3 {
         }
     }
     pub unsafe fn OutputStackTrace(&self, outputcontrol: u32, frames: Option<&[DEBUG_STACK_FRAME]>, flags: u32) -> windows_core::Result<()> {
-        unsafe { (windows_core::Interface::vtable(self).OutputStackTrace)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
+        unsafe { (windows_core::Interface::vtable(self).OutputStackTrace)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
     }
     pub unsafe fn GetDebuggeeType(&self, class: *mut u32, qualifier: *mut u32) -> windows_core::Result<()> {
         unsafe { (windows_core::Interface::vtable(self).GetDebuggeeType)(windows_core::Interface::as_raw(self), class as _, qualifier as _).ok() }
@@ -23265,7 +23265,7 @@ impl IDebugControl4 {
         }
     }
     pub unsafe fn OutputStackTrace(&self, outputcontrol: u32, frames: Option<&[DEBUG_STACK_FRAME]>, flags: u32) -> windows_core::Result<()> {
-        unsafe { (windows_core::Interface::vtable(self).OutputStackTrace)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
+        unsafe { (windows_core::Interface::vtable(self).OutputStackTrace)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
     }
     pub unsafe fn GetDebuggeeType(&self, class: *mut u32, qualifier: *mut u32) -> windows_core::Result<()> {
         unsafe { (windows_core::Interface::vtable(self).GetDebuggeeType)(windows_core::Interface::as_raw(self), class as _, qualifier as _).ok() }
@@ -25926,7 +25926,7 @@ impl IDebugControl5 {
         }
     }
     pub unsafe fn OutputStackTrace(&self, outputcontrol: u32, frames: Option<&[DEBUG_STACK_FRAME]>, flags: u32) -> windows_core::Result<()> {
-        unsafe { (windows_core::Interface::vtable(self).OutputStackTrace)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
+        unsafe { (windows_core::Interface::vtable(self).OutputStackTrace)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
     }
     pub unsafe fn GetDebuggeeType(&self, class: *mut u32, qualifier: *mut u32) -> windows_core::Result<()> {
         unsafe { (windows_core::Interface::vtable(self).GetDebuggeeType)(windows_core::Interface::as_raw(self), class as _, qualifier as _).ok() }
@@ -26666,7 +26666,7 @@ impl IDebugControl5 {
         unsafe { (windows_core::Interface::vtable(self).GetStackTraceEx)(windows_core::Interface::as_raw(self), frameoffset, stackoffset, instructionoffset, core::mem::transmute(frames.as_ptr()), frames.len().try_into().unwrap(), framesfilled.unwrap_or(core::mem::zeroed()) as _).ok() }
     }
     pub unsafe fn OutputStackTraceEx(&self, outputcontrol: u32, frames: Option<&[DEBUG_STACK_FRAME_EX]>, flags: u32) -> windows_core::Result<()> {
-        unsafe { (windows_core::Interface::vtable(self).OutputStackTraceEx)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
+        unsafe { (windows_core::Interface::vtable(self).OutputStackTraceEx)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
     }
     pub unsafe fn GetContextStackTraceEx(&self, startcontext: Option<*const core::ffi::c_void>, startcontextsize: u32, frames: Option<&mut [DEBUG_STACK_FRAME_EX]>, framecontexts: Option<*mut core::ffi::c_void>, framecontextssize: u32, framecontextsentrysize: u32, framesfilled: Option<*mut u32>) -> windows_core::Result<()> {
         unsafe { (windows_core::Interface::vtable(self).GetContextStackTraceEx)(windows_core::Interface::as_raw(self), startcontext.unwrap_or(core::mem::zeroed()) as _, startcontextsize, core::mem::transmute(frames.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), framecontexts.unwrap_or(core::mem::zeroed()) as _, framecontextssize, framecontextsentrysize, framesfilled.unwrap_or(core::mem::zeroed()) as _).ok() }
@@ -28656,7 +28656,7 @@ impl IDebugControl6 {
         }
     }
     pub unsafe fn OutputStackTrace(&self, outputcontrol: u32, frames: Option<&[DEBUG_STACK_FRAME]>, flags: u32) -> windows_core::Result<()> {
-        unsafe { (windows_core::Interface::vtable(self).OutputStackTrace)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
+        unsafe { (windows_core::Interface::vtable(self).OutputStackTrace)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
     }
     pub unsafe fn GetDebuggeeType(&self, class: *mut u32, qualifier: *mut u32) -> windows_core::Result<()> {
         unsafe { (windows_core::Interface::vtable(self).GetDebuggeeType)(windows_core::Interface::as_raw(self), class as _, qualifier as _).ok() }
@@ -29396,7 +29396,7 @@ impl IDebugControl6 {
         unsafe { (windows_core::Interface::vtable(self).GetStackTraceEx)(windows_core::Interface::as_raw(self), frameoffset, stackoffset, instructionoffset, core::mem::transmute(frames.as_ptr()), frames.len().try_into().unwrap(), framesfilled.unwrap_or(core::mem::zeroed()) as _).ok() }
     }
     pub unsafe fn OutputStackTraceEx(&self, outputcontrol: u32, frames: Option<&[DEBUG_STACK_FRAME_EX]>, flags: u32) -> windows_core::Result<()> {
-        unsafe { (windows_core::Interface::vtable(self).OutputStackTraceEx)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
+        unsafe { (windows_core::Interface::vtable(self).OutputStackTraceEx)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
     }
     pub unsafe fn GetContextStackTraceEx(&self, startcontext: Option<*const core::ffi::c_void>, startcontextsize: u32, frames: Option<&mut [DEBUG_STACK_FRAME_EX]>, framecontexts: Option<*mut core::ffi::c_void>, framecontextssize: u32, framecontextsentrysize: u32, framesfilled: Option<*mut u32>) -> windows_core::Result<()> {
         unsafe { (windows_core::Interface::vtable(self).GetContextStackTraceEx)(windows_core::Interface::as_raw(self), startcontext.unwrap_or(core::mem::zeroed()) as _, startcontextsize, core::mem::transmute(frames.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), framecontexts.unwrap_or(core::mem::zeroed()) as _, framecontextssize, framecontextsentrysize, framesfilled.unwrap_or(core::mem::zeroed()) as _).ok() }
@@ -31419,7 +31419,7 @@ impl IDebugControl7 {
         }
     }
     pub unsafe fn OutputStackTrace(&self, outputcontrol: u32, frames: Option<&[DEBUG_STACK_FRAME]>, flags: u32) -> windows_core::Result<()> {
-        unsafe { (windows_core::Interface::vtable(self).OutputStackTrace)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
+        unsafe { (windows_core::Interface::vtable(self).OutputStackTrace)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
     }
     pub unsafe fn GetDebuggeeType(&self, class: *mut u32, qualifier: *mut u32) -> windows_core::Result<()> {
         unsafe { (windows_core::Interface::vtable(self).GetDebuggeeType)(windows_core::Interface::as_raw(self), class as _, qualifier as _).ok() }
@@ -32159,7 +32159,7 @@ impl IDebugControl7 {
         unsafe { (windows_core::Interface::vtable(self).GetStackTraceEx)(windows_core::Interface::as_raw(self), frameoffset, stackoffset, instructionoffset, core::mem::transmute(frames.as_ptr()), frames.len().try_into().unwrap(), framesfilled.unwrap_or(core::mem::zeroed()) as _).ok() }
     }
     pub unsafe fn OutputStackTraceEx(&self, outputcontrol: u32, frames: Option<&[DEBUG_STACK_FRAME_EX]>, flags: u32) -> windows_core::Result<()> {
-        unsafe { (windows_core::Interface::vtable(self).OutputStackTraceEx)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
+        unsafe { (windows_core::Interface::vtable(self).OutputStackTraceEx)(windows_core::Interface::as_raw(self), outputcontrol, core::mem::transmute(frames.map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.map_or(0, |slice| slice.len().try_into().unwrap()), flags).ok() }
     }
     pub unsafe fn GetContextStackTraceEx(&self, startcontext: Option<*const core::ffi::c_void>, startcontextsize: u32, frames: Option<&mut [DEBUG_STACK_FRAME_EX]>, framecontexts: Option<*mut core::ffi::c_void>, framecontextssize: u32, framecontextsentrysize: u32, framesfilled: Option<*mut u32>) -> windows_core::Result<()> {
         unsafe { (windows_core::Interface::vtable(self).GetContextStackTraceEx)(windows_core::Interface::as_raw(self), startcontext.unwrap_or(core::mem::zeroed()) as _, startcontextsize, core::mem::transmute(frames.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())), frames.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), framecontexts.unwrap_or(core::mem::zeroed()) as _, framecontextssize, framecontextsentrysize, framesfilled.unwrap_or(core::mem::zeroed()) as _).ok() }

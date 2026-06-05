@@ -1,4 +1,4 @@
-//! Minimal sample for the `RichEditBox` widget.
+//! Sample for the `RichEditBox` widget.
 
 use windows_reactor::*;
 
@@ -24,5 +24,5 @@ fn app(cx: &mut RenderCx) -> Element {
 }
 
 fn main() -> Result<()> {
-    App::new().title("Sample").render(app)
+    reactor_minimal::run("RichEditBox", app)
 }

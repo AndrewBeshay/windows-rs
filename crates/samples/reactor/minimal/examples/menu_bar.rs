@@ -1,4 +1,4 @@
-//! Minimal sample for the `MenuBar` and `DropDownButton` menu flyout.
+//! Sample for the `MenuBar` and `DropDownButton` menu flyout.
 
 use windows_reactor::*;
 
@@ -45,5 +45,5 @@ fn app(cx: &mut RenderCx) -> Element {
 }
 
 fn main() -> Result<()> {
-    App::new().title("MenuBar Sample").render(app)
+    reactor_minimal::run("MenuBar", app)
 }

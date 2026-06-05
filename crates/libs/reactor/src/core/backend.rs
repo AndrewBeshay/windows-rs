@@ -356,6 +356,7 @@ pub enum PropValue {
     ScrollVis(ScrollBarVisibility),
     InfoBarSev(InfoBarSeverity),
     ImageStretch(ImageStretch),
+    SurfaceImageSource(SurfaceImageSource),
     LineEndpoints(LineEndpoints),
     NavMenuItems(Vec<NavViewItem>),
     NavPaneDisplayMode(NavViewPaneDisplayMode),
@@ -401,8 +402,8 @@ pub enum Event {
     InfoBarClosed,
     TabSelectionChanged,
     TabCloseRequested,
-    /// TabView: the "add tab" (+) button was clicked.
-    TabAddButtonClicked,
+    /// TabView: the built-in "+" add-tab button was clicked.
+    AddTabButtonClick,
     NavSelectionChanged,
     NavBackRequested,
     /// NavigationView: search box query submitted.
