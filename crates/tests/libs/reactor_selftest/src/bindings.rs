@@ -16295,6 +16295,15 @@ impl IScrollViewer {
             .ok()
         }
     }
+    pub fn ScrollToVerticalOffset(&self, offset: f64) -> windows_core::Result<()> {
+        unsafe {
+            (windows_core::Interface::vtable(self).ScrollToVerticalOffset)(
+                windows_core::Interface::as_raw(self),
+                offset,
+            )
+            .ok()
+        }
+    }
 }
 #[repr(C)]
 #[doc(hidden)]
@@ -16381,7 +16390,8 @@ pub struct IScrollViewer_Vtbl {
     add_DirectManipulationCompleted: usize,
     remove_DirectManipulationCompleted: usize,
     ScrollToHorizontalOffset: usize,
-    ScrollToVerticalOffset: usize,
+    pub ScrollToVerticalOffset:
+        unsafe extern "system" fn(*mut core::ffi::c_void, f64) -> windows_core::HRESULT,
     ZoomToFactor: usize,
     ChangeView: usize,
     ChangeViewWithOptionalAnimation: usize,
