@@ -167,6 +167,9 @@ impl<T: Send + Clone + PartialEq + 'static> AsyncSetState<T> {
     pub fn call(&self, value: T) {
         let cell = Arc::clone(&self.cell);
         let type_name = self.type_name;
+        // Re-render the host that owns this state, not just the most-recently
+        // active host — so async writes from a secondary window update it.
+        let host_id = self.marshaller.id();
         self.marshaller.dispatch(move || {
             let mut slot = cell.lock().unwrap();
             let prev = slot.downcast_ref::<T>().unwrap_or_else(|| {
@@ -180,7 +183,7 @@ impl<T: Send + Clone + PartialEq + 'static> AsyncSetState<T> {
             }
             *slot = Box::new(value);
             drop(slot);
-            request_ui_rerender_on_ui_thread();
+            request_ui_rerender_for(host_id);
         });
     }
 }

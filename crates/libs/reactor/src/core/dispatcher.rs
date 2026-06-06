@@ -1,6 +1,7 @@
 use std::cell::RefCell;
-use std::collections::VecDeque;
+use std::collections::{HashMap, VecDeque};
 use std::rc::Rc;
+use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{Arc, Mutex};
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
@@ -26,9 +27,42 @@ pub trait SendDispatcher: Send + Sync + 'static {
 
 thread_local! {
     // UI thread's rerender hook, installed by `RenderHost::set_marshaller`.
-    // Single-host-per-thread; replace with a per-host registry if
-    // multi-host-per-thread is added.
+    // Legacy single-slot path, kept for compatibility; multi-host code uses
+    // `UI_RERENDERS` below.
     static UI_RERENDER: RefCell<Option<Rc<dyn Fn()>>> = const { RefCell::new(None) };
+
+    // Per-host rerender hooks, keyed by the owning host's marshaller id. This
+    // lets an `AsyncSetState` write re-render the host that *owns* the state
+    // rather than whichever host last installed the single slot — required for
+    // multiple windows on one UI thread (e.g. a settings window doing async
+    // work while the main window keeps rendering chat).
+    static UI_RERENDERS: RefCell<HashMap<u64, Rc<dyn Fn()>>> = RefCell::new(HashMap::new());
+}
+
+/// Register a host's rerender hook under its marshaller id.
+#[doc(hidden)]
+pub fn register_ui_rerender(id: u64, rerender: Rc<dyn Fn()>) {
+    UI_RERENDERS.with(|m| {
+        m.borrow_mut().insert(id, rerender);
+    });
+}
+
+/// Remove a host's rerender hook (on teardown / marshaller clear).
+#[doc(hidden)]
+pub fn unregister_ui_rerender(id: u64) {
+    UI_RERENDERS.with(|m| {
+        m.borrow_mut().remove(&id);
+    });
+}
+
+/// Request a rerender of the specific host identified by `id`. Clones the hook
+/// out before invoking so the registry isn't borrowed across re-entrant work.
+#[doc(hidden)]
+pub fn request_ui_rerender_for(id: u64) {
+    let hook = UI_RERENDERS.with(|m| m.borrow().get(&id).cloned());
+    if let Some(rr) = hook {
+        rr();
+    }
 }
 
 /// Install (or clear) the UI thread's rerender hook.
@@ -78,11 +112,24 @@ impl Drop for UiRerenderGuard {
 #[derive(Clone)]
 pub struct UiMarshaller {
     inner: Arc<dyn SendDispatcher>,
+    /// Identifies the owning host so async state writes re-render the right
+    /// window. Clones of a marshaller (propagated to child contexts) share it.
+    id: u64,
 }
+
+static NEXT_MARSHALLER_ID: AtomicU64 = AtomicU64::new(1);
 
 impl UiMarshaller {
     pub fn new(inner: Arc<dyn SendDispatcher>) -> Self {
-        Self { inner }
+        Self {
+            inner,
+            id: NEXT_MARSHALLER_ID.fetch_add(1, Ordering::Relaxed),
+        }
+    }
+
+    /// The owning host's id (for [`request_ui_rerender_for`]).
+    pub fn id(&self) -> u64 {
+        self.id
     }
 
     /// Schedule `f` to run on the UI thread at normal priority.

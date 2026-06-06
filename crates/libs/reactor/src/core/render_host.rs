@@ -2,7 +2,7 @@ use std::cell::{Cell, RefCell};
 use std::rc::Rc;
 use std::time::Instant;
 
-use super::dispatcher::set_ui_rerender;
+use super::dispatcher::{register_ui_rerender, unregister_ui_rerender};
 use super::*;
 
 /// Per-render telemetry exposed by [`RenderHost::stats`].
@@ -182,6 +182,13 @@ impl<B: Backend + 'static, D: Dispatcher + 'static> RenderHost<B, D> {
     /// publish the host's rerender hook to the UI thread's `UI_RERENDER`
     /// slot. Passing `None` clears both.
     pub fn set_marshaller(&self, marshaller: Option<UiMarshaller>) {
+        // Drop the previous host hook (if any) before swapping marshallers, so a
+        // replaced/cleared marshaller doesn't leave a stale entry in the registry.
+        let old_id = self.inner.marshaller.borrow().as_ref().map(|m| m.id());
+        if let Some(id) = old_id {
+            unregister_ui_rerender(id);
+        }
+
         self.inner.marshaller.borrow_mut().clone_from(&marshaller);
         self.inner
             .render_cx
@@ -192,16 +199,16 @@ impl<B: Backend + 'static, D: Dispatcher + 'static> RenderHost<B, D> {
             .borrow_mut()
             .set_marshaller(marshaller.clone());
 
-        if marshaller.is_some() {
+        // Register this host's rerender under its marshaller id, so async state
+        // writes re-render *this* window even when other windows are also live.
+        if let Some(m) = &marshaller {
             let weak = Rc::downgrade(&self.inner);
             let rerender: Rc<dyn Fn()> = Rc::new(move || {
                 if let Some(strong) = weak.upgrade() {
                     request_render(&strong);
                 }
             });
-            set_ui_rerender(Some(rerender));
-        } else {
-            set_ui_rerender(None);
+            register_ui_rerender(m.id(), rerender);
         }
     }
 
