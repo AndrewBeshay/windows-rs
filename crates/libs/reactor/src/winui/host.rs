@@ -9,8 +9,14 @@ use crate::bindings::*;
 thread_local! {
     static ROOT_FRAMEWORK_ELEMENT: RefCell<Option<FrameworkElement>> = const { RefCell::new(None) };
     static ROOT_WINDOW: RefCell<Option<Window>> = const { RefCell::new(None) };
-    /// Queued theme; applied once `ROOT_FRAMEWORK_ELEMENT` is available.
-    static PENDING_THEME: Cell<Option<ElementTheme>> = const { Cell::new(None) };
+    /// Every live window root element. The app theme is global, so a theme change
+    /// is applied to all of them, not just the most recent root (which broke
+    /// multi-window apps: opening a second window stole the single root slot).
+    /// Closed windows are pruned lazily on the next apply.
+    static ROOT_ELEMENTS: RefCell<Vec<FrameworkElement>> = const { RefCell::new(Vec::new()) };
+    /// The app's current theme. Stored so a theme requested before any root
+    /// exists — and any window opened later — both adopt it.
+    static CURRENT_THEME: Cell<Option<ElementTheme>> = const { Cell::new(None) };
     /// TitleBar height option requested before `ROOT_WINDOW` was set. Applied once
     /// the window becomes available in `post_render`.
     static PENDING_TALL: Cell<Option<bool>> = const { Cell::new(None) };
@@ -35,14 +41,13 @@ pub fn set_requested_theme(theme: RequestedTheme) {
         _ => ElementTheme::Default,
     };
 
-    ROOT_FRAMEWORK_ELEMENT.with(|cell| {
-        if let Some(ife) = cell.borrow().as_ref() {
-            let _ = ife.put_RequestedTheme(element_theme);
-            update_titlebar_theme();
-        } else {
-            PENDING_THEME.with(|p| p.set(Some(element_theme)));
-        }
+    // Remember the choice (new windows adopt it) and apply to every live root.
+    CURRENT_THEME.with(|c| c.set(Some(element_theme)));
+    ROOT_ELEMENTS.with(|cell| {
+        cell.borrow_mut()
+            .retain(|fe| fe.put_RequestedTheme(element_theme).is_ok());
     });
+    update_titlebar_theme();
 }
 
 fn update_titlebar_theme() {
@@ -239,11 +244,14 @@ impl ReactorHost {
                                 );
                                 ROOT_FRAMEWORK_ELEMENT
                                     .with(|cell| *cell.borrow_mut() = Some(fe.clone()));
+                                // Track this root so global theme changes reach it.
+                                ROOT_ELEMENTS
+                                    .with(|cell| cell.borrow_mut().push(fe.clone()));
 
-                                // Apply any theme that was requested before the
-                                // root element existed (e.g. from a first-mount
-                                // use_effect).
-                                if let Some(theme) = PENDING_THEME.with(|p| p.take()) {
+                                // Adopt the app's current theme — covers a theme
+                                // requested before any root existed (first-mount
+                                // use_effect) and windows opened after a change.
+                                if let Some(theme) = CURRENT_THEME.with(|c| c.get()) {
                                     let _ = fe.put_RequestedTheme(theme);
                                     update_titlebar_theme();
                                 }
